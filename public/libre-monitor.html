@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibreMonitor</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/scripts.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <div class="left-column">
+            <button class="button" id="wardBtn" onclick="setView('WARD', this)">WARD</button>
+            <button class="button" id="patient1Btn" onclick="setView('PATIENT 1', this)">PATIENT 1</button>
+            <button class="button" id="patient2Btn" onclick="setView('PATIENT 2', this)">PATIENT 2</button>
+            <button class="button" id="patient3Btn" onclick="setView('PATIENT 3', this)">PATIENT 3</button>
+            <button class="button" id="patient4Btn" onclick="setView('PATIENT 4', this)">PATIENT 4</button>
+        </div>
+        <div class="right-section" id="rightSection">
+            <div class="grid-item" id="patient1">
+                <div class="overlay-text">Patient 1</div>
+                <iframe src="https://ns-11.oracle.cgmsim.com" class="iframe-container" frameborder="0"></iframe>
+            </div>
+            <div class="grid-item" id="patient2">
+                <div class="overlay-text">Patient 2</div>
+                <iframe src="https://ns-12.oracle.cgmsim.com" class="iframe-container" frameborder="0"></iframe>
+            </div>
+            <div class="grid-item" id="patient3">
+                <div class="overlay-text">Patient 3</div>
+                <iframe src="https://ns-13.oracle.cgmsim.com" class="iframe-container" frameborder="0"></iframe>
+            </div>
+            <div class="grid-item" id="patient4">
+                <div class="overlay-text">Patient 4</div>
+                <iframe src="https://ns-14.oracle.cgmsim.com" class="iframe-container" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Simulate a click on the "WARD" button when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const wardButton = document.getElementById('wardBtn');
+            wardButton.click(); // Activate "WARD" view
+        });
+    </script>
+</body>
+</html>

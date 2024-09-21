@@ -2,6 +2,7 @@
   "name": "client",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,7 +14,9 @@
     "bun-bagel": "^1.0.9",
     "dotenv": "^16.4.5",
     "esm": "^3.2.25",
+    "express": "^4.21.0",
     "libre-link-unofficial-api": "^1.0.0-alpha.3",
+    "node-cron": "^3.0.3",
     "node-fetch": "^3.3.2"
   }
 }
