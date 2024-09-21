@@ -11,7 +11,7 @@ const client = new LibreLinkClient({
 const api_key = process.env.API_KEY;
 
 // Function to generate API URLs with offset
-const generateApiUrl = (index) => `https://ns-${index + 10}.oracle.cgmsim.com/api/v1/entries`;
+const generateApiUrl = (index) => `https://ns-${index + 11}.oracle.cgmsim.com/api/v1/entries`;
 
 const login = async () => {
   return await client.login();
