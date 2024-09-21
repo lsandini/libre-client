@@ -1,5 +1,5 @@
 #!/bin/bash
 
 git add .
-git commit -m "init"
+git commit -m "loop through users"
 git push -u origin main

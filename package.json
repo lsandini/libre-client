@@ -13,6 +13,7 @@
     "bun-bagel": "^1.0.9",
     "dotenv": "^16.4.5",
     "esm": "^3.2.25",
-    "libre-link-unofficial-api": "^1.0.0-alpha.3"
+    "libre-link-unofficial-api": "^1.0.0-alpha.3",
+    "node-fetch": "^3.3.2"
   }
 }
