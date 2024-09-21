@@ -10,11 +10,8 @@ const client = new LibreLinkClient({
 
 const api_key = process.env.API_KEY;
 
-// Mapping of patient IDs to API URLs
-const patientApiUrls = {
-  "84a69a2c-74ff-11ef-9172-be31d2becf10": "https://ns-0.oracle.cgmsim.com/api/v1/entries",
-  "9624baf6-d1b5-e811-8134-02d09c370615": "https://ns-3.oracle.cgmsim.com/api/v1/entries"
-};
+// Function to generate API URLs with offset
+const generateApiUrl = (index) => `https://ns-${index + 10}.oracle.cgmsim.com/api/v1/entries`;
 
 const login = async () => {
   return await client.login();
@@ -22,10 +19,6 @@ const login = async () => {
 
 const fetchConnections = async () => {
   return await client.fetchConnections();
-};
-
-const fetchReadings = async () => {
-  return await client.fetchReading();
 };
 
 const translateTrendArrow = (trendArrow) => {
@@ -40,13 +33,7 @@ const translateTrendArrow = (trendArrow) => {
   return trends[trendArrow] || "UNKNOWN";
 };
 
-const uploadToAPI = async (patientId, glucoseData) => {
-  const api_url = patientApiUrls[patientId];
-  if (!api_url) {
-    console.error(`No API URL found for patient ${patientId}`);
-    return;
-  }
-
+const uploadToAPI = async (patientId, glucoseData, apiUrl) => {
   const headers = {
     'Content-Type': 'application/json',
     'api-secret': api_key
@@ -60,7 +47,7 @@ const uploadToAPI = async (patientId, glucoseData) => {
   };
 
   try {
-    const response = await fetch(api_url, {
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: headers,
       body: JSON.stringify(body),
@@ -70,9 +57,9 @@ const uploadToAPI = async (patientId, glucoseData) => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    console.log(`Data uploaded successfully for patient ${patientId} to ${api_url}`);
+    return `Data uploaded successfully for patient ${patientId} to ${apiUrl}`;
   } catch (error) {
-    console.error(`Error uploading data for patient ${patientId}:`, error.message);
+    return `Error uploading data for patient ${patientId}: ${error.message}`;
   }
 };
 
@@ -85,19 +72,22 @@ const main = async () => {
 
     const connections = await fetchConnections();
     console.log("Fetched connections => ");
-    console.log(JSON.stringify(connections, null, 2));
+    // console.log(JSON.stringify(connections, null, 2));
 
-    for (const connection of connections.data) {
+    for (const [index, connection] of connections.data.entries()) {
       const { patientId, firstName, lastName, glucoseMeasurement } = connection;
-      console.log(`\nFetching data for ${firstName} ${lastName} (${patientId})`);
+      const apiUrl = generateApiUrl(index);
+      console.log(`\nProcessing data for ${firstName} ${lastName} (${patientId})`);
+      console.log(`API URL: ${apiUrl}`);
 
       if (glucoseMeasurement) {
         console.log(`Glucose Value: ${glucoseMeasurement.ValueInMgPerDl} mg/dL (${glucoseMeasurement.Value} mmol/L)`);
         console.log(`Trend Arrow: ${glucoseMeasurement.TrendArrow} - ${translateTrendArrow(glucoseMeasurement.TrendArrow)}`);
         console.log(`Timestamp: ${glucoseMeasurement.Timestamp}`);
 
-        // Upload data to API
-        await uploadToAPI(patientId, glucoseMeasurement);
+        // Upload data to API and log the result immediately
+        const uploadResult = await uploadToAPI(patientId, glucoseMeasurement, apiUrl);
+        console.log(uploadResult);
       } else {
         console.log(`No glucose data available for this patient`);
       }
