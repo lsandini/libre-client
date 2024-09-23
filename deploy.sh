@@ -1,5 +1,5 @@
 #!/bin/bash
 
 git add .
-git commit -m "cron and serve static libre-monitoring"
+git commit -m "add names in overlay"
 git push -u origin main

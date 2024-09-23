@@ -78,3 +78,9 @@ body, html {
     grid-column: 1 / span 2;
     grid-row: 1 / span 2;
 }
+
+.patient-name {
+    font-size: 0.4em; /* Smaller font size */
+    color: #666; /* Grey color for distinction */
+    display: block; /* Ensure it stays on a new line */
+}

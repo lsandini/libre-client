@@ -15,31 +15,77 @@
             <button class="button" id="patient2Btn" onclick="setView('PATIENT 2', this)">PATIENT 2</button>
             <button class="button" id="patient3Btn" onclick="setView('PATIENT 3', this)">PATIENT 3</button>
             <button class="button" id="patient4Btn" onclick="setView('PATIENT 4', this)">PATIENT 4</button>
+            
+            <!-- Toggle Switch for Patient Names -->
+            <label for="nameToggle">Show Names:</label>
+            <input type="checkbox" id="nameToggle" checked>
         </div>
+        
         <div class="right-section" id="rightSection">
             <div class="grid-item" id="patient1">
-                <div class="overlay-text">Patient 1</div>
+                <div class="overlay-text">
+                    Patient 1
+                    <span class="patient-name"></span> <!-- This will be updated dynamically -->
+                </div>
                 <iframe src="https://ns-11.oracle.cgmsim.com" class="iframe-container" frameborder="0"></iframe>
             </div>
             <div class="grid-item" id="patient2">
-                <div class="overlay-text">Patient 2</div>
+                <div class="overlay-text">
+                    Patient 2
+                    <span class="patient-name"></span> <!-- This will be updated dynamically -->
+                </div>
                 <iframe src="https://ns-12.oracle.cgmsim.com" class="iframe-container" frameborder="0"></iframe>
             </div>
             <div class="grid-item" id="patient3">
-                <div class="overlay-text">Patient 3</div>
+                <div class="overlay-text">
+                    Patient 3
+                    <span class="patient-name"></span> <!-- This will be updated dynamically -->
+                </div>
                 <iframe src="https://ns-13.oracle.cgmsim.com" class="iframe-container" frameborder="0"></iframe>
             </div>
             <div class="grid-item" id="patient4">
-                <div class="overlay-text">Patient 4</div>
+                <div class="overlay-text">
+                    Patient 4
+                    <span class="patient-name"></span> <!-- This will be updated dynamically -->
+                </div>
                 <iframe src="https://ns-14.oracle.cgmsim.com" class="iframe-container" frameborder="0"></iframe>
             </div>
         </div>
     </div>
+
     <script>
-        // Simulate a click on the "WARD" button when the page loads
-        document.addEventListener('DOMContentLoaded', () => {
+        // Fetch patient data and update overlays with firstName and lastName
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Fetch patient data from the server
+                const response = await fetch('/patient-data');
+                const data = await response.json();
+
+                // Update each patient overlay with firstName and lastName
+                data.forEach((patient, index) => {
+                    const patientNameDiv = document.querySelector(`#patient${index + 1} .patient-name`);
+                    if (patientNameDiv) {
+                        patientNameDiv.textContent = `${patient.firstName} ${patient.lastName}`;
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching patient data:', error);
+            }
+
+            // Simulate a click on the "WARD" button when the page loads
             const wardButton = document.getElementById('wardBtn');
-            wardButton.click(); // Activate "WARD" view
+            wardButton.click();
+        });
+
+        // Toggle name visibility
+        const nameToggle = document.getElementById('nameToggle');
+        const nameElements = document.querySelectorAll('.patient-name');
+
+        nameToggle.addEventListener('change', (event) => {
+            const showNames = event.target.checked;
+            nameElements.forEach(el => {
+                el.style.display = showNames ? 'block' : 'none'; // Change to 'block' for new line
+            });
         });
     </script>
 </body>
