@@ -35,4 +35,4 @@ COPY . .
 EXPOSE 3000
 
 # Run the application.
-CMD node server.mjs
+CMD ["node", "server.mjs"]
